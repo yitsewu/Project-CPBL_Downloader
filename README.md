@@ -7,7 +7,7 @@
 
 
 ## How to Use?
-1. Set the cookie.
+1. Set the cookie
 2. Run
 
 
