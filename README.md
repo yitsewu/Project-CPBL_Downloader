@@ -8,7 +8,7 @@
 
 ## How to Use?
 1. Set the cookie
-2. Run
+2. Run HamiVideoDownloader.py
 
 
 ## Reference
