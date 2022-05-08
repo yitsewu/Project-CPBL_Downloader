@@ -3,7 +3,7 @@
 
 ## Install
 - pip install -r requirements.txt
-- go downloaf and set ffmpeg
+- go download and set ffmpeg
 
 
 ## How to Use?
