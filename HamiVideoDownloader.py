@@ -37,15 +37,8 @@ class CpblHamiVideoDownloader():
 
     def update_CPBL_video_list(self):
 
-        # Main Page (主要頁面，會有部分沒有)
+        # 2022 四月完整賽事
         main_page_url = 'https://hamivideo.hinet.net/more.do?type=card_vod_horizontal&key=572&menuId=664&filterType=new'
-
-        main_page = self.session.get(main_page_url, timeout=self.timeout)
-        bs_main_page = BeautifulSoup(main_page.text, 'html.parser')
-        main_page_video_path = bs_main_page.find_all("div", {"class": "vodListBlock sty2 ui26"})[
-            0].find_all("div", {"class": "list_item"})
-
-        # Other Page (動態加載頁面，取得其他)
         other_page_url = 'https://hamivideo.hinet.net/ui26_page.do'
         data = {
             'menuId': '664',
@@ -54,6 +47,17 @@ class CpblHamiVideoDownloader():
             'key': '572',
             'type': 'card_vod_horizontal'
         }
+
+        # 2022 五月完整賽事
+        main_page_url = 'https://hamivideo.hinet.net/more.do?type=card_vod_horizontal&key=592&menuId=664&filterType=new'
+
+        main_page = self.session.get(main_page_url, timeout=self.timeout)
+        bs_main_page = BeautifulSoup(main_page.text, 'html.parser')
+        main_page_video_path = bs_main_page.find_all("div", {"class": "vodListBlock sty2 ui26"})[
+            0].find_all("div", {"class": "list_item"})
+
+        # Other Page (動態加載頁面，取得其他)
+        
 
         other_page = self.session.post(other_page_url, timeout=self.timeout, data=data)
 
@@ -130,6 +134,10 @@ class CpblHamiVideoDownloader():
             for row in reader:
                 temp = self.HamiVideo(row[0], row[1], row[2], row[3], row[4], row[5])
                 self.CPBL_video_last.append(temp)
+                # print(temp.id, temp.oot_vod, temp.play_url, temp.date, temp.name)
+
+            # for video in self.CPBL_video_list:
+            #     writer.writerow([video.id, video.date, video.name, video.play_url, video.oot_vod, video.m3u8_url])
     
     def write_list_csv(self):
         with open('hamivideo_list.csv', 'w', newline='',encoding='utf-8') as csvfile:
@@ -186,7 +194,7 @@ class CpblHamiVideoDownloader():
 
 
 if __name__ == "__main__":
-    cookie = "Your Cookie"
+    cookie = "uuid=6a476fc8-097e-474d-8404-1ea9fbf46dfd; __htid=6a476fc8-097e-474d-8404-1ea9fbf46dfd; __BWfp=c1650990764416x98a69c9d7; _gcl_au=1.1.176094014.1650990764; _ga=GA1.3.1370128725.1650990764; _fbp=fb.2.1650990764587.1482156319; _fbp=fb.1.1650990764587.1482156319; video_volume=1; _ht_hi=1; _gid=GA1.2.1563732173.1651406238; _gid=GA1.3.1563732173.1651406238; _ht_f4b8a7=1; BIGipServerrBtu5cKbUKuOQaGS4KMTNg=!hXXZDTXbCWxv2KYEzMM1clw1rVnGWaajdmwgPmbkbTo/CR0JeggGLn80LbG3kgth+URn/vF2yUDU09U=; ohu=c7058664da3a32d575be1fa287050c53349905dbda293d3af69faac42e249077aca45727cadba67f70e5fb5faa0a03e491c80932e350eb621920acdf6946d5aa087cdc6d9236064bc76f18036a428b87f083378065a57ff087502b45146df2598e59f59fdca971cb816c0c04bb70cb7a3cd264f63e22437a4fdfe7d2288848f2ab50dbddb0d17a64bc2cf01044870a1aae474ab8848d66c1bbcf6220fc443849510c48a9125579ddb808787f4938368af0b2424254428c56c7755ec35904845393c2059e19e7dd2016ecdb19fc26f3fb84904e6190408a247c29c626af465fe66682c40ac8ab06c5ecc854711b1cdead8b1a2c37ce6c94b35a74ac6a3c95a77caf580eecd43038f0c87eb5f1bbb8de7eabf49e123aed7f115a63230488d47a8a770fa2ccbdf1ebb9c0ac9e3dffd41108dc0adc44f5e0a7fb46678bb0e9d73f09c5b3248d7cefd8934d62ee09f141c7dc01a72fe2be3ddf0e9ecab2602461bd3ba0680cba75dc259ed011617d5a9d4442adc2cb0660b1c885dc6120a7a6fb4665a78ca3e877e334047701e2d7cf56b82b635c35d4a0de2b718e858301a8076ce6; JSESSIONID=751E762FA714A33E82AD39E5A94A6201; keepMenuId=; _ht_em=1; seconds=1; _gat_UA-49979189-1=1; csrftoken=ece44b69-f78c-4a3d-b1af-354d78018b22; _dc_gtm_UA-49979189-1=1; _ga=GA1.2.1370128725.1650990764; _ga_NCTT6HZ347=GS1.1.1651477374.15.1.1651477458.49"
     CPBL = CpblHamiVideoDownloader(cookie)
     
     CPBL.update_CPBL_video_list()
